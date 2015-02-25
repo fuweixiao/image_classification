@@ -3,14 +3,20 @@ import urllib
 import os
 
 #set up input and output
-inputpath =  'orig.json'
+inputpath =  '/home/smile/workspace/image_classification/orig.json'
 outputpath = '/home/smile/pinterest/'
+dictfile = '/home/smile/workspace/image_classification/result-final.txt'
 try:
     os.mkdir(outputpath)
 except:
     pass
 
-
+#read dictfile
+dictionary = {}
+lines = open(dictfile).readlines()
+for line in lines:
+    kvpair = line.split(',')
+    dictionary[kvpair[0]] = kvpair[1]
 
 #deal with useless lines which cannot be parsed
 lines = open(inputpath).readlines()
@@ -34,11 +40,16 @@ url = ""
 for str in strs:
     url = url + str 
 file_name = url.split('/')[-1]
+
 category = data["board"]["category"]
+dirname = category
+if dictionary.has_key(category):
+    dirname = dictionary[category]
 try:
-    os.mkdir(outputpath + category)
+    os.mkdir(outputpath + dirname)
 except:
     pass
-urllib.urlretrieve (url, outputpath + category + '/' + file_name)
+
+urllib.urlretrieve (url, outputpath + dirname + '/' + file_name)
 json_data.close()
 
