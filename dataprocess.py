@@ -16,7 +16,9 @@ dictionary = {}
 lines = open(dictfile).readlines()
 for line in lines:
     kvpair = line.split(',')
-    dictionary[kvpair[0]] = kvpair[1]
+    key = kvpair[0]
+    del kvpair[0]
+    dictionary[key] = kvpair
 
 #deal with useless lines which cannot be parsed
 lines = open(inputpath).readlines()
@@ -44,12 +46,19 @@ file_name = url.split('/')[-1]
 category = data["board"]["category"]
 dirname = category
 if dictionary.has_key(category):
-    dirname = dictionary[category]
-try:
-    os.mkdir(outputpath + dirname)
-except:
-    pass
+    for value in dictionary[category]:
+        dirname = value.split('\n')[0]
+        try:
+            os.mkdir(outputpath + dirname)
+        except:
+            pass
+        urllib.urlretrieve (url, outputpath + dirname + '/' + file_name)
+else:
+    try:
+        os.mkdir(outputpath + dirname)
+    except:
+        pass
+    urllib.urlretrieve (url, outputpath + dirname + '/' + file_name)
 
-urllib.urlretrieve (url, outputpath + dirname + '/' + file_name)
 json_data.close()
 
