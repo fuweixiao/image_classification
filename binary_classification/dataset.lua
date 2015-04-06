@@ -22,7 +22,7 @@ local initcheck = argcheck{
        local out = true;
        for k,v in ipairs(paths) do
           if type(v) ~= 'string' then
-             print('paths can only be of string input');
+             --print('paths can only be of string input');
              out = false
           end
        end
@@ -81,7 +81,7 @@ function dataset:__init(...)
 
    -- argcheck
    local args =  initcheck(...)
-   print(args)
+   --print(args)
    for k,v in pairs(args) do self[k] = v end
 
    if not self.loadSize then self.loadSize = self.sampleSize; end
@@ -146,8 +146,8 @@ function dataset:__init(...)
    self.classList = {}                  -- index of imageList to each image of a particular class
    self.classListSample = self.classList -- the main list used when sampling data
 
-   print('running "find" on each class directory, and concatenate all'
-         .. ' those filenames into a single file containing all image paths for a given class')
+   --print('running "find" on each class directory, and concatenate all'
+   --      .. ' those filenames into a single file containing all image paths for a given class')
    -- so, generates one file per class
    local classFindFiles = {}
    for i=1,#self.classes do
@@ -170,7 +170,7 @@ function dataset:__init(...)
    os.execute('bash ' .. tmpfile)
    os.execute('rm -f ' .. tmpfile)
 
-   print('now combine all the files to a single large file')
+   --print('now combine all the files to a single large file')
    local tmpfile = os.tmpname()
    local tmphandle = assert(io.open(tmpfile, 'w'))
    -- concat all finds to a single large file in the order of self.classes
@@ -183,7 +183,7 @@ function dataset:__init(...)
    os.execute('rm -f ' .. tmpfile)
 
    --==========================================================================
-   print('load the large concatenated list of sample paths to self.imagePath')
+   --print('load the large concatenated list of sample paths to self.imagePath')
    local maxPathLength = tonumber(sys.fexecute(wc .. " -L '"
                                                   .. combinedFindList .. "' |"
                                                   .. cut .. " -f1 -d' '")) + 1
@@ -205,9 +205,9 @@ function dataset:__init(...)
    end
 
    self.numSamples = self.imagePath:size(1)
-   if self.verbose then print(self.numSamples ..  ' samples found.') end
+   --if self.verbose then --print(self.numSamples ..  ' samples found.') end
    --==========================================================================
-   print('Updating classList and imageClass appropriately')
+   --print('Updating classList and imageClass appropriately')
    self.imageClass:resize(self.numSamples)
    local runningIndex = 0
    for i=1,#self.classes do
@@ -226,7 +226,7 @@ function dataset:__init(...)
 
    --==========================================================================
    -- clean up temporary files
-   print('Cleaning up temporary files')
+   --print('Cleaning up temporary files')
    local tmpfilelistall = ''
    for i=1,#(classFindFiles) do
       tmpfilelistall = tmpfilelistall .. ' "' .. classFindFiles[i] .. '"'
@@ -242,8 +242,8 @@ function dataset:__init(...)
    if self.split == 100 then
       self.testIndicesSize = 0
    else
-      print('Splitting training and test sets to a ratio of '
-               .. self.split .. '/' .. (100-self.split))
+      --print('Splitting training and test sets to a ratio of '
+               --.. self.split .. '/' .. (100-self.split))
       self.classListTrain = {}
       self.classListTest  = {}
       self.classListSample = self.classListTrain

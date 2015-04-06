@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<title>Demo</title>
+<html>
+	<head> 
+		<link rel="stylesheet" type="text/css" href="static/style.css"/>
+	<body>
+	<center><h1>Image Classification</h1></center>
+	<div id=img1>
+		{% if name %}
+		<img src = {{name}}></img>
+		{% endif %}
+		{% if result %}
+		<h1>{{result}}</h1>
+		{% endif %}
+	</div>
+	<form id = "inputfile" action = "/upload" method = "POST" enctype="multipart/form-data">
+		<input type="file" name = "file"> </input> 
+		<input type="submit" value="Upload!"/>
+	</form>
+	</body>
+</html>

@@ -57,6 +57,15 @@ function test()
    top5_center = top5_center * 100 / nTest
    top1_10crop = top1_10crop * 100 / nTest
    top5_10crop = top5_10crop * 100 / nTest
+   
+   file = io.open("/home/fwx/workspace/image_classification/result/result.txt", "w")
+   if top1_center == 100 then
+	file:write("False")
+   else
+   	file:write("True")
+   end
+   file:close()
+
    loss = loss / (nTest/opt.testBatchSize) -- because loss is calculated per batch
    testLogger:add{
       ['% top1 accuracy (test set) (center crop)'] = top1_center,

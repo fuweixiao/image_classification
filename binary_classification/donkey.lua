@@ -67,11 +67,11 @@ local trainHook = function(self, path)
 end
 
 if paths.filep(trainCache) then
-   print('Loading train metadata from cache')
+   --print('Loading train metadata from cache')
    trainLoader = torch.load(trainCache)
    trainLoader.sampleHookTrain = trainHook
 else
-   print('Creating train metadata')
+   --print('Creating train metadata')
    trainLoader = dataLoader{
       paths = {paths.concat(opt.data, 'train')},
       loadSize = {3, 256, 256},
@@ -143,11 +143,11 @@ local testHook = function(self, path)
 end
 
 if paths.filep(testCache) then
-   print('Loading test metadata from cache')
+   --print('Loading test metadata from cache')
    testLoader = torch.load(testCache)
    testLoader.sampleHookTest = testHook
 else
-   print('Creating test metadata')
+   --print('Creating test metadata')
    testLoader = dataLoader{
       paths = {paths.concat(opt.data, 'val')},
       loadSize = {3, 256, 256},
@@ -167,11 +167,11 @@ if paths.filep(meanstdCache) then
    local meanstd = torch.load(meanstdCache)
    mean = meanstd.mean
    std = meanstd.std
-   print('Loaded mean and std from cache.')
+   --print('Loaded mean and std from cache.')
 else
    local tm = torch.Timer()
    local nSamples = 1
-   print('Estimating the mean (per-channel, shared for all pixels) over ' .. nSamples .. ' randomly sampled training images')
+   --print('Estimating the mean (per-channel, shared for all pixels) over ' .. nSamples .. ' randomly sampled training images')
    local meanEstimate = {0,0,0}
    for i=1,nSamples do
       local img = trainLoader:sample(1)
@@ -184,7 +184,7 @@ else
    end
    mean = meanEstimate
 
-   print('Estimating the std (per-channel, shared for all pixels) over ' .. nSamples .. ' randomly sampled training images')
+   --print('Estimating the std (per-channel, shared for all pixels) over ' .. nSamples .. ' randomly sampled training images')
    local stdEstimate = {0,0,0}
    for i=1,nSamples do
       local img = trainLoader:sample(1)
@@ -201,9 +201,9 @@ else
    cache.mean = mean
    cache.std = std
    torch.save(meanstdCache, cache)
-   print('Time to estimate:', tm:time().real)
+   --print('Time to estimate:', tm:time().real)
 end
-print('Mean: ', mean[1], mean[2], mean[3], 'Std:', std[1], std[2], std[3])
+--print('Mean: ', mean[1], mean[2], mean[3], 'Std:', std[1], std[2], std[3])
 
 do -- just check if mean/std look good now
    local testmean = 0
@@ -213,5 +213,5 @@ do -- just check if mean/std look good now
       testmean = testmean + img:mean()
       teststd  = teststd + img:std()
    end
-   print('Stats of 100 randomly sampled images after normalizing. Mean: ' .. testmean/100 .. ' Std: ' .. teststd/100)
+   --print('Stats of 100 randomly sampled images after normalizing. Mean: ' .. testmean/100 .. ' Std: ' .. teststd/100)
 end

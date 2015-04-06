@@ -25,7 +25,7 @@ do -- start K datathreads (donkeys)
             tid = idx
             local seed = opt.manualSeed + idx
             torch.manualSeed(seed)
-            print(string.format('Starting donkey with id: %d seed: %d', tid, seed))
+            --print(string.format('Starting donkey with id: %d seed: %d', tid, seed))
             paths.dofile('donkey.lua')
          end
       );
@@ -43,12 +43,12 @@ donkeys:addjob(function() return trainLoader.classes end, function(c) classes = 
 donkeys:synchronize()
 nClasses = #classes
 assert(nClasses, "Failed to get nClasses")
-print('nClasses: ', nClasses)
+--print('nClasses: ', nClasses)
 torch.save(paths.concat(opt.save, 'classes.t7'), classes)
 
 nTest = 0
 donkeys:addjob(function() return testLoader:sizeTest() end, function(c) nTest = c end)
 donkeys:synchronize()
 assert(nTest > 0, "Failed to get nTest")
-print('nTest: ', nTest)
+--print('nTest: ', nTest)
 

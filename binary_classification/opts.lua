@@ -34,7 +34,7 @@ function M.parse(arg)
     cmd:option('-nEpochs',         1,    'Number of total epochs to run')
     cmd:option('-epochSize',       1, 'Number of batches per epoch')
     cmd:option('-epochNumber',     1,     'Manual epoch number (useful on restarts)')
-    cmd:option('-batchSize',       128,   'mini-batch size (1 = pure stochastic)')
+    cmd:option('-batchSize',       1,   'mini-batch size (1 = pure stochastic)')
     cmd:option('-testBatchSize',    1,   'mini-batch size for testing')
     ---------- Optimization options ----------------------
     cmd:option('-LR',    0.0, 'learning rate; if set, overrides default LR/WD recipe')
@@ -50,7 +50,7 @@ function M.parse(arg)
     -- add commandline specified options
     opt.save = paths.concat(opt.cache,
                             cmd:string('alexnet12', opt,
-                                       {retrain=true, optimState=true, cache=true, data=true}))
+                                       {retrain=true, optimState=true, cache=false, data=true}))
     -- add date/time
     opt.save = paths.concat(opt.save, ',' .. os.date():gsub(' ',''))
     return opt

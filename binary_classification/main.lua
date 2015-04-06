@@ -18,14 +18,14 @@ require 'os'
 local opts = paths.dofile('opts.lua')
 
 opt = opts.parse(arg)
-print(opt)
+--print(opt)
 os.execute("rm " .. paths.concat(opt.cache, '*.t7'))
 torch.setdefaulttensortype('torch.FloatTensor')
 
 cutorch.setDevice(opt.GPU) -- by default, use GPU 1
 torch.manualSeed(opt.manualSeed)
 
-print('Saving everything to: ' .. opt.save)
+--print('Saving everything to: ' .. opt.save)
 os.execute('mkdir -p ' .. opt.save)
 
 paths.dofile('data.lua')
